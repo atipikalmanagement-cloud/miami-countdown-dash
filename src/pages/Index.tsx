@@ -1,5 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Plane, Target, Trophy } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 import CountdownTimer from "@/components/CountdownTimer";
 import ProgressRing from "@/components/ProgressRing";
 import AddPartnerDialog from "@/components/AddPartnerDialog";
@@ -11,34 +13,60 @@ const GOAL = 60;
 const MONTHLY_GOAL = 20;
 
 interface Partner {
+  id: string;
   name: string;
   month: string;
 }
 
-const STORAGE_KEY = "dr-partners";
-
-const loadPartners = (): Partner[] => {
-  try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    return saved ? JSON.parse(saved) : [];
-  } catch {
-    return [];
-  }
-};
-
 const Index = () => {
-  const [partners, setPartners] = useState<Partner[]>(loadPartners);
+  const [partners, setPartners] = useState<Partner[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchPartners = useCallback(async () => {
+    const { data, error } = await supabase
+      .from("partners")
+      .select("id, name, month")
+      .order("created_at", { ascending: true });
+
+    if (error) {
+      toast.error("Erro ao carregar parceiros");
+      console.error(error);
+    } else {
+      setPartners(data || []);
+    }
+    setLoading(false);
+  }, []);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(partners));
-  }, [partners]);
+    fetchPartners();
 
-  const addPartner = (partner: Partner) => {
-    setPartners((prev) => [...prev, partner]);
+    const channel = supabase
+      .channel("partners-realtime")
+      .on("postgres_changes", { event: "*", schema: "public", table: "partners" }, () => {
+        fetchPartners();
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [fetchPartners]);
+
+  const addPartner = async (partner: { name: string; month: string }) => {
+    const { error } = await supabase.from("partners").insert({ name: partner.name, month: partner.month });
+    if (error) {
+      toast.error("Erro ao adicionar parceiro");
+      console.error(error);
+    }
   };
 
-  const removePartner = (index: number) => {
-    setPartners((prev) => prev.filter((_, i) => i !== index));
+  const removePartner = async (index: number) => {
+    const partner = partners[index];
+    const { error } = await supabase.from("partners").delete().eq("id", partner.id);
+    if (error) {
+      toast.error("Erro ao remover parceiro");
+      console.error(error);
+    }
   };
 
   const countByMonth = (month: string) => partners.filter((p) => p.month === month).length;
@@ -50,6 +78,14 @@ const Index = () => {
     { label: "Maio", current: countByMonth("may"), goal: MONTHLY_GOAL },
     { label: "Junho", current: countByMonth("june"), goal: MONTHLY_GOAL },
   ];
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-muted-foreground animate-pulse text-lg">A carregar...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
