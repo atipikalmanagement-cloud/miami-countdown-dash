@@ -15,6 +15,12 @@ const MONTHS = [
   { value: "april", label: "Abril" },
   { value: "may", label: "Maio" },
   { value: "june", label: "Junho" },
+  { value: "july", label: "Julho" },
+  { value: "august", label: "Agosto" },
+  { value: "september", label: "Setembro" },
+  { value: "october", label: "Outubro" },
+  { value: "november", label: "Novembro" },
+  { value: "december", label: "Dezembro" },
 ];
 
 const AddPartnerDialog = ({ onAdd }: AddPartnerDialogProps) => {
@@ -25,10 +31,18 @@ const AddPartnerDialog = ({ onAdd }: AddPartnerDialogProps) => {
   const getCurrentMonth = () => {
     const now = new Date();
     const m = now.getMonth();
-    if (m === 3) return "april";
-    if (m === 4) return "may";
-    if (m === 5) return "june";
-    return "april";
+    const map: Record<number, string> = {
+      3: "april",
+      4: "may",
+      5: "june",
+      6: "july",
+      7: "august",
+      8: "september",
+      9: "october",
+      10: "november",
+      11: "december",
+    };
+    return map[m] ?? "april";
   };
 
   const handleSubmit = (e: React.FormEvent) => {
