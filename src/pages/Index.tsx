@@ -98,7 +98,7 @@ const Index = () => {
           </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Target className="h-4 w-4 text-primary" />
-            <span className="font-semibold">Challenge Q2 2026</span>
+            <span className="font-semibold">Challenge Q4 2026</span>
           </div>
         </div>
       </header>
@@ -107,7 +107,7 @@ const Index = () => {
         {/* Title */}
         <div className="text-center space-y-2">
           <h1 className="text-3xl sm:text-5xl font-black tracking-tight">
-            <span className="gold-text">60 Parceiros</span> em 3 Meses
+            <span className="gold-text">60 Parceiros</span> em 6 Meses
           </h1>
           <p className="text-muted-foreground text-base sm:text-lg max-w-lg mx-auto">
             Tempo restante para bater a meta e ganhar a viagem a <span className="text-primary font-semibold">Miami</span> 🌴
