@@ -10,7 +10,7 @@ interface MonthlyBreakdownProps {
 
 const MonthlyBreakdown = ({ months }: MonthlyBreakdownProps) => {
   return (
-    <div className="grid grid-cols-3 gap-3 sm:gap-4 w-full">
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 w-full">
       {months.map((month) => {
         const percent = Math.min((month.current / month.goal) * 100, 100);
         const isComplete = month.current >= month.goal;
