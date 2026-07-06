@@ -9,7 +9,7 @@ import MonthlyBreakdown from "@/components/MonthlyBreakdown";
 import PartnersList from "@/components/PartnersList";
 import miamiImg from "@/assets/miami-prize.jpg";
 
-const GOAL = 60;
+const GOAL = 180;
 const MONTHLY_GOAL = 20;
 
 interface Partner {
@@ -77,6 +77,12 @@ const Index = () => {
     { label: "Abril", current: countByMonth("april"), goal: MONTHLY_GOAL },
     { label: "Maio", current: countByMonth("may"), goal: MONTHLY_GOAL },
     { label: "Junho", current: countByMonth("june"), goal: MONTHLY_GOAL },
+    { label: "Julho", current: countByMonth("july"), goal: MONTHLY_GOAL },
+    { label: "Agosto", current: countByMonth("august"), goal: MONTHLY_GOAL },
+    { label: "Setembro", current: countByMonth("september"), goal: MONTHLY_GOAL },
+    { label: "Outubro", current: countByMonth("october"), goal: MONTHLY_GOAL },
+    { label: "Novembro", current: countByMonth("november"), goal: MONTHLY_GOAL },
+    { label: "Dezembro", current: countByMonth("december"), goal: MONTHLY_GOAL },
   ];
 
   if (loading) {
@@ -107,7 +113,7 @@ const Index = () => {
         {/* Title */}
         <div className="text-center space-y-2">
           <h1 className="text-3xl sm:text-5xl font-black tracking-tight">
-            <span className="gold-text">60 Parceiros</span> em 6 Meses
+            <span className="gold-text">180 Parceiros</span> em 9 Meses
           </h1>
           <p className="text-muted-foreground text-base sm:text-lg max-w-lg mx-auto">
             Tempo restante para bater a meta e ganhar a viagem a <span className="text-primary font-semibold">Miami</span> 🌴
@@ -151,7 +157,7 @@ const Index = () => {
             </div>
             <h2 className="text-2xl sm:text-4xl font-black gold-text">Destino: Miami</h2>
             <p className="text-foreground/80 text-sm sm:text-base mt-1 max-w-md">
-              Batam a meta de 60 parceiros e a equipa inteira voa para Miami! 🏖️
+              Batam a meta de 180 parceiros e a equipa inteira voa para Miami! 🏖️
             </p>
           </div>
         </div>
